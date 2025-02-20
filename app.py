@@ -7,8 +7,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 # --- Data Loading and Preprocessing ---
 @st.cache_data
 def load_data():
-    # Load your dataset (adjust the file path if necessary)
-    df = pd.read_csv("final_animedataset.csv")
+    # Load the dataset using anime-dataset-2023.csv
+    df = pd.read_csv("anime-dataset-2023.csv")
     # Drop rows with missing genre information and standardize the genres
     df = df.dropna(subset=["Genres"])
     df["Genres"] = df["Genres"].str.lower()
@@ -22,7 +22,7 @@ def build_similarity_matrix(df):
     tfidf = TfidfVectorizer(stop_words="english")
     tfidf_matrix = tfidf.fit_transform(df["Genres"])
     cosine_sim = cosine_similarity(tfidf_matrix, tfidf_matrix)
-    # Create a reverse mapping from anime title to DataFrame index (using "Name" column)
+    # Create a reverse mapping from anime title to DataFrame index (using the "Name" column)
     indices = pd.Series(df.index, index=df["Name"]).drop_duplicates()
     return cosine_sim, indices
 
